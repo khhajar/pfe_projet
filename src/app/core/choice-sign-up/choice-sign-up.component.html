@@ -1,0 +1,47 @@
+<div
+  class="flex flex-col lg:flex-row items-center justify-center min-h-[93vh] bg-gray-50"
+>
+  <div class="p-6 sm:p-8 md:p-10 lg:p-11 w-full lg:w-1/2">
+    <h1
+      class="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-700 mb-6 text-center lg:text-left"
+    >
+      How do you want to use NextHire?
+    </h1>
+
+    <div class="space-y-4">
+      <div
+        (click)="selectOption('hire')"
+        [class.border-2]="selectedOption === 'hire'"
+        [class.border-primary]="selectedOption === 'hire'"
+        [class.text-primary]="selectedOption === 'hire'"
+        [class.shadow-lg]="selectedOption === 'hire'"
+        class="flex items-center p-4 cursor-pointer bg-white border border-gray-200 shadow-md"
+      >
+        <i class="fa fa-search mr-4 text-lg sm:text-xl"></i>
+        <p class="text-base sm:text-lg !m-0">I'm Here to Hire Talent</p>
+      </div>
+      <div
+        (click)="selectOption('job')"
+        [class.border-2]="selectedOption === 'job'"
+        [class.border-primary]="selectedOption === 'job'"
+        [class.text-primary]="selectedOption === 'job'"
+        [class.shadow-lg]="selectedOption === 'job'"
+        class="flex items-center p-4 cursor-pointer bg-white border border-gray-200 shadow-md"
+      >
+        <i class="fa fa-paper-plane mr-4 text-lg sm:text-xl"></i>
+        <p class="text-base sm:text-lg !m-0">I'm Here to Get a Job Career</p>
+      </div>
+
+      <div class="flex justify-center lg:justify-end mt-6">
+        <button
+          (click)="createAccount()"
+          class="bg-primary text-white text-base p-2 font-bold hover:bg-hoverPrimary w-full sm:w-auto"
+        >
+          Create Account
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hidden lg:block w-1/2 h-[93vh] hiring-choice-img"></div>
+</div>

@@ -1,0 +1,9 @@
+.ad-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8px 15px;
+  border-radius: 0px 30px 0px 30px;
+  background-color: #000000;
+  color: #f4f5f8;
+}

@@ -1,0 +1,96 @@
+<div
+  class="bg-white shadow-lg border-b-gray-150 border-solid border-b-2 text-black font-semibold w-full fixed leading-loose top-0 left-0 z-50 backdrop-blur-sm md:backdrop-blur-none p-0 m-0"
+  [ngClass]="{ 'shadow-lg shadow-black backdrop-blur-sm': isMenuOpen }"
+>
+  <div class="max-w-7xl mx-auto px-6 py-3">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <a
+        routerLink="/home"
+        class="font-bold text-lg text-primary m-0 uppercase"
+      >
+        NextHire
+      </a>
+      <!-- Mobile Menu Button -->
+      <button
+        class="md:hidden text-gray-600 focus:outline-none"
+        (click)="toggleMenu()"
+      >
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <!-- Navigation Links (Desktop) -->
+      <div class="hidden md:flex space-x-6">
+        <a
+          *ngFor="let link of linked"
+          [routerLink]="link.url"
+          routerLinkActive="!text-primary"
+          class="text-secondary hover:text-primary uppercase text-sm"
+        >
+          {{ link.name }}
+        </a>
+      </div>
+
+      <!-- Authentication Buttons -->
+      <div class="hidden md:flex items-center space-x-3">
+        <ng-container *ngIf="!isAuthenticated; else loggedInActions">
+          <button
+            (click)="goLogin()"
+            class="text-primary hover:bg-gray-100 bg-white text-sm px-3 py-1 border-solid border-2 border-primary"
+          >
+            Log in
+          </button>
+          <button
+            (click)="goRegistration()"
+            class="text-white hover:bg-hoverPrimary bg-primary text-sm px-3 py-1"
+          >
+            Get Started
+          </button>
+        </ng-container>
+
+        <ng-template #loggedInActions>
+          <button
+            (click)="logout()"
+            class="text-white bg-red-500 hover:bg-red-600 text-sm px-3 py-1"
+          >
+            Logout
+          </button>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div *ngIf="isMenuOpen" class="md:hidden mt-2 space-y-2 text-center">
+      <a
+        *ngFor="let link of linked"
+        [routerLink]="link.url"
+        class="block text-gray-600 hover:text-primary"
+      >
+        {{ link.name }}
+      </a>
+      <ng-container *ngIf="!isAuthenticated; else mobileLoggedInActions">
+        <button
+          (click)="goLogin()"
+          class="block w-full text-primary hover:bg-gray-100 bg-white px-3 py-1 border-solid border-2 border-primary mt-2"
+        >
+          Log in
+        </button>
+        <button
+          (click)="goRegistration()"
+          class="block w-full text-white hover:bg-hoverPrimary bg-primary px-3 py-1"
+        >
+          Get Started
+        </button>
+      </ng-container>
+      <ng-template #mobileLoggedInActions>
+        <button
+          (click)="logout()"
+          class="block w-full text-white bg-red-500 hover:bg-red-600 px-3 py-1 mt-2"
+        >
+          Logout
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<div class="pt-[3rem]"></div>

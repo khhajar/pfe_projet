@@ -1,0 +1,69 @@
+<div class="bg-white p-6 rounded-sm border border-gray-300">
+  <div class="mb-4">
+    <h2 class="text-xl font-bold">Achievements</h2>
+    <p class="text-gray-500 text-sm">Tell us about yourself</p>
+  </div>
+  <app-spinner-local *ngIf="isLoading"></app-spinner-local>
+  <ng-container *ngIf="!isLoading">
+    <form [formGroup]="formsAchievement" (ngSubmit)="saveAchievements()">
+      <div class="mb-4">
+        <label for="achievements" class="font-semibold block mb-1 text-sm">
+          Add Achievements
+        </label>
+
+        <textarea
+          formControlName="achievements"
+          id="achievements"
+          class="w-full sm:w-3/4 p-3 h-32 border bg-gray-50 border-gray-300 rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+          placeholder="Write about your achievements..."
+        ></textarea>
+
+        <!-- Error Message for Required Field -->
+        <small
+          *ngIf="
+            achievementsControl?.hasError('required') &&
+            achievementsControl?.touched
+          "
+          class="text-red-500 block font-semibold mt-1"
+        >
+          Achievements are required.
+        </small>
+
+        <!-- Error Message for Min Length -->
+        <small
+          *ngIf="
+            achievementsControl?.hasError('minlength') &&
+            achievementsControl?.touched
+          "
+          class="text-red-500 block font-semibold mt-1"
+        >
+          Achievements must be at least 25 characters.
+        </small>
+        <!-- Error Message for Max Length -->
+        <small
+          *ngIf="
+            achievementsControl?.hasError('maxlength') &&
+            achievementsControl?.touched
+          "
+          class="text-red-500 block font-semibold mt-1"
+        >
+          Achievements cannot exceed 1000 characters.
+        </small>
+
+        <p class="text-sm text-gray-500 mt-1">
+          You have
+          {{ 1000 - (achievementsControl?.value?.length || 0) }} characters
+          remaining (max 1000).
+        </p>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="isSaving || achievementsControl?.invalid"
+        class="text-white bg-primary hover:bg-hoverPrimary transition-all px-5 py-2 rounded-sm w-full sm:w-1/5 font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
+      >
+        {{ isSaving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </form>
+  </ng-container>
+</div>

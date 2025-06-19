@@ -1,0 +1,19 @@
+<div class="mb-6 w-full">
+  <div
+    class="flex justify-between items-center bg-gray-50 p-2 w-full sm:w-2/3 border border-gray-300 rounded-sm"
+  >
+    <div class="w-full">
+      <p class="text-base font-semibold text-gray-800 capitalize">
+        {{ title }}
+      </p>
+      <hr class="my-1 w-full" />
+      <p class="text-xs text-gray-400">{{ subtitle }}</p>
+    </div>
+    <a
+      (click)="onRemove()"
+      class="cursor-pointer p-1 text-gray-600 hover:text-gray-800"
+    >
+      <i class="fa fa-times !text-lg text-red-600"></i>
+    </a>
+  </div>
+</div>

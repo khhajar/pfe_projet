@@ -1,0 +1,42 @@
+<div
+  *ngIf="isLoading; else content"
+  class="flex justify-center items-center mt-3"
+>
+  <app-spinner-local></app-spinner-local>
+</div>
+
+<ng-template #content>
+  <div
+    *ngIf="candidates && candidates.length > 0; else noContent"
+    class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-3"
+  >
+    <ng-container *ngFor="let candidate of candidates">
+      <div
+        class="bg-white p-4 flex flex-col w-full rounded-sm border-gray-200 border shadow-sm"
+      >
+        <app-candidate-info-card
+          [candidateName]="candidate.firstName + ' ' + candidate.lastName"
+          [candidatePosition]="candidate.jobTitle || ''"
+          [candidateExperience]="candidate.experience?.totalExperience || ''"
+          [candidateImage]="candidate.profilePicture || ''"
+          [candidateStatus]="getCandidateApplicationStatus(candidate)"
+        >
+        </app-candidate-info-card>
+        <div class="flex w-full gap-1 mt-2">
+          <a
+            [routerLink]="['/cv', candidate.userId]"
+            class="bg-white border cursor-pointer text-center border-primary text-primary font-semibold text-sm rounded-sm px-2 py-1 capitalize w-full hover:text-white hover:bg-primary"
+          >
+            Profile
+          </a>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #noContent>
+  <div class="text-center text-gray-500 mt-3 font-semibold">
+    No candidates available.
+  </div>
+</ng-template>

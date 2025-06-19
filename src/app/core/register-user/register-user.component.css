@@ -1,0 +1,7 @@
+.container-img {
+  background-image: url('/assets/images/hiring.jpg');
+  height: 93vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

@@ -1,0 +1,190 @@
+<!-- Profile Image Upload Section -->
+<div
+  *ngIf="isLoading"
+  class="bg-white p-6 border border-gray-300 mx-auto max-w-4xl mb-3"
+>
+  <app-spinner-local></app-spinner-local>
+</div>
+<ng-container *ngIf="!isLoading">
+  <form
+    [formGroup]="mainInfoForm"
+    (ngSubmit)="updateCandidate()"
+    class="bg-white p-6 border border-gray-300 mx-auto max-w-4xl mb-3"
+  >
+    <div class="w-full sm:w-2/3">
+      <p class="text-lg font-bold capitalize mb-5">Your Personal Info</p>
+      <app-profile-image
+        [profileImage]="profileImage"
+        (imageUploaded)="onImageSelected($event)"
+      ></app-profile-image>
+      <!-- First Name Input -->
+      <div class="flex flex-col mb-3">
+        <label
+          for="first-name"
+          class="capitalize font-semibold text-blue-950 mb-1"
+          >First Name</label
+        >
+        <input
+          type="text"
+          id="first-name"
+          placeholder="Enter your first name"
+          formControlName="firstName"
+          class="bg-gray-100 border border-gray-300 p-2 outline-none focus:border-primary focus:border-2"
+        />
+        <small
+          class="text-red-500 font-semibold mt-1"
+          *ngIf="
+            mainInfoForm.controls['firstName'].invalid &&
+            mainInfoForm.controls['firstName'].touched
+          "
+        >
+          First name is required.
+        </small>
+      </div>
+
+      <!-- Last Name Input -->
+      <div class="flex flex-col mb-3">
+        <label
+          for="last-name"
+          class="capitalize font-semibold text-blue-950 mb-1"
+          >Last Name</label
+        >
+        <input
+          type="text"
+          id="last-name"
+          placeholder="Enter your last name"
+          formControlName="lastName"
+          class="bg-gray-100 border border-gray-300 p-2 outline-none focus:border-primary focus:border-2"
+        />
+        <small
+          class="text-red-500 font-semibold mt-1"
+          *ngIf="
+            mainInfoForm.controls['lastName'].invalid &&
+            mainInfoForm.controls['lastName'].touched
+          "
+        >
+          Last name is required.
+        </small>
+      </div>
+
+      <!-- Gender Radio Buttons -->
+      <div class="flex flex-wrap mb-3">
+        <div class="flex justify-start items-center mr-6 mb-2">
+          <input
+            type="radio"
+            formControlName="gender"
+            value="male"
+            id="male"
+            class="mr-2"
+          />
+          <label for="male" class="capitalize font-semibold text-blue-950"
+            >Male</label
+          >
+        </div>
+        <div class="flex justify-start items-center mr-6 mb-2">
+          <input
+            type="radio"
+            formControlName="gender"
+            value="female"
+            id="female"
+            class="mr-2"
+          />
+          <label for="female" class="capitalize font-semibold text-blue-950"
+            >Female</label
+          >
+        </div>
+      </div>
+
+      <!-- Mobile Number Input -->
+      <div class="flex flex-col mb-3">
+        <label
+          for="mobile-number"
+          class="capitalize font-semibold text-blue-950 mb-1"
+          >Mobile Number</label
+        >
+        <input
+          type="text"
+          id="mobile-number"
+          placeholder="Enter your mobile number"
+          formControlName="phone"
+          class="bg-gray-100 border border-gray-300 p-2 outline-none focus:border-primary focus:border-2"
+        />
+        <small
+          class="text-red-500 font-semibold mt-1"
+          *ngIf="
+            mainInfoForm.controls['phone'].invalid &&
+            mainInfoForm.controls['phone'].touched
+          "
+        >
+          Please enter a valid phone number.
+        </small>
+      </div>
+      <!-- Job Title -->
+      <div class="flex flex-col mb-3">
+        <label
+          for="job-title"
+          class="capitalize font-semibold text-blue-950 mb-1"
+          >Job Title</label
+        >
+        <input
+          type="text"
+          id="job-title"
+          placeholder="Enter your job title"
+          formControlName="jobTitle"
+          class="bg-gray-100 border border-gray-300 p-2 outline-none focus:border-primary focus:border-2"
+        />
+        <small
+          class="text-red-500 font-semibold mt-1"
+          *ngIf="
+            mainInfoForm.controls['jobTitle'].invalid &&
+            mainInfoForm.controls['jobTitle'].touched
+          "
+        >
+          Job Title are required.
+        </small>
+      </div>
+
+      <!-- City Select -->
+      <div class="flex flex-col mb-3">
+        <label for="city" class="capitalize font-semibold text-blue-950 mb-1"
+          >City</label
+        >
+        <div
+          class="relative border border-gray-300 rounded-sm bg-gray-50 focus-within:ring-2 focus-within:ring-primary"
+        >
+          <select
+            id="city"
+            formControlName="city"
+            class="w-full p-2 bg-transparent focus:outline-none appearance-none"
+          >
+            <option value="" disabled>Select city</option>
+            <option *ngFor="let level of cities" [value]="level">
+              {{ level }}
+            </option>
+          </select>
+          <div
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+          >
+            <i class="fa fa-chevron-down"></i>
+          </div>
+        </div>
+        <small
+          class="text-red-500 font-semibold mt-1"
+          *ngIf="
+            mainInfoForm.controls['city'].invalid &&
+            mainInfoForm.controls['city'].touched
+          "
+        >
+          Please select a city.
+        </small>
+      </div>
+      <button
+        type="submit"
+        [disabled]="isSaving || mainInfoForm.invalid || profileImage == ''"
+        class="text-white bg-primary transition-all px-4 py-2 rounded-sm w-full sm:w-2/5 font-medium mt-4 disabled:bg-gray-300 disabled:cursor-not-allowed"
+      >
+        {{ isSaving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </form>
+</ng-container>

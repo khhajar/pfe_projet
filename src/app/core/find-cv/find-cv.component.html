@@ -1,0 +1,85 @@
+<div class="bg-gray-100">
+  <div class="bg-primary p-6 md:p-3 flex flex-col justify-center items-center">
+    <div class="w-full md:w-1/2 text-center md:text-left">
+      <p class="text-white font-bold text-base">Find your trigger CV</p>
+    </div>
+    <app-search-input
+      (searchEvent)="onSearch($event)"
+      class="bg-white px-1 w-full sm:w-3/4 md:w-2/4 border-solid border-gray-200 border-2"
+    ></app-search-input>
+  </div>
+
+  <div class="mt-10 pb-5 min-h-screen flex flex-col items-center">
+    <div
+      class="container w-4/5 mx-auto px-4 md:px-12 lg:px-28 flex flex-col justify-center lg:flex-row gap-4"
+    >
+      <app-filter-cv
+        (onFilterItem)="onFilterJob($event)"
+        class="w-full lg:w-1/4"
+      ></app-filter-cv>
+
+      <div
+        class="w-full min-h-screen lg:w-3/4 flex flex-col gap-2 items-center"
+      >
+        <app-spinner-local
+          *ngIf="isLoading; else notLoading"
+        ></app-spinner-local>
+        <ng-template #notLoading>
+          <div class="w-full flex flex-col gap-4">
+            <ng-container
+              *ngIf="
+                !filteredCandidates || filteredCandidates.length === 0;
+                else cvList
+              "
+            >
+              <p class="font-semibold text-center text-gray-600">
+                No Cvs Found!
+              </p>
+            </ng-container>
+          </div>
+          <ng-template #cvList>
+            <div class="w-full flex flex-col gap-4">
+              <app-cv-card
+                *ngFor="let item of paginatedItems()"
+                [candidate]="item"
+                class="border-solid border-2 border-gray-200"
+              ></app-cv-card>
+
+              <div
+                class="w-full flex flex-wrap justify-center md:justify-end mt-4 gap-2"
+              >
+                <button
+                  (click)="changePage(currentPage - 1)"
+                  [disabled]="currentPage === 1"
+                  class="px-2 py-1 border bg-primary text-white flex items-center text-xs md:text-sm disabled:opacity-50"
+                >
+                  <i class="fa fa-chevron-left"></i>
+                </button>
+
+                <button
+                  *ngFor="let page of pages"
+                  (click)="changePage(page)"
+                  [class.bg-primary]="currentPage === page"
+                  [class.text-white]="currentPage === page"
+                  class="px-2 py-1 border font-bold text-lg md:text-sm"
+                >
+                  {{ page }}
+                </button>
+
+                <button
+                  (click)="changePage(currentPage + 1)"
+                  [disabled]="currentPage === pages.length"
+                  class="px-2 py-1 border bg-primary text-white flex items-center text-xs md:text-sm disabled:opacity-50"
+                >
+                  <i class="fa fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,27 @@
+<div class="flex items-center">
+  <div class="w-24 h-16 md:w-32 md:h-20 mr-4">
+    <img
+      [src]="candidateImage || defaultImage"
+      class="w-full h-full object-cover rounded-md"
+      alt="Candidate"
+    />
+  </div>
+  <div>
+    <p class="font-bold text-gray-800 text-sm uppercase">{{ candidateName }}</p>
+    <p class="text-gray-600 text-xs font-semibold">{{ candidatePosition }}</p>
+    <p class="text-gray-600 text-xs">
+      <span class="text-primary font-semibold">{{ candidateExperience }}</span>
+    </p>
+  </div>
+</div>
+<div>
+  <p
+    *ngIf="candidateStatus === 'Invited' && candidateSchedule"
+    class="text-gray-600 text-xs font-semibold"
+  >
+    Interview Date:
+    <span class="text-gray-800 bg-gray-200 rounded-md p-1">
+      {{ formatDate(candidateSchedule.date) }}, {{ candidateSchedule.time }}
+    </span>
+  </p>
+</div>

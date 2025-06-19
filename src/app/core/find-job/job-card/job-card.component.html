@@ -1,0 +1,58 @@
+<div
+  class="bg-white w-full p-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-3"
+>
+  <div class="w-full md:flex-1 pr-2">
+    <div class="flex">
+      <a
+        [routerLink]="['/job', job.jobId]"
+        class="text-lg md:text-sm font-semibold text-primary hover:underline uppercase mr-2"
+      >
+        {{ job.title }}
+      </a>
+      <p
+        *ngIf="jobStatus && selectedTab == 'applications'"
+        class="text-xs font-semibold p-1 rounded-md uppercase"
+        [ngClass]="
+          {
+            Applied: 'bg-gray-400 text-white',
+            Invited: 'bg-yellow-400 text-black',
+            Rejected: 'bg-red-400 text-white',
+            Offered: 'bg-blue-400 text-white'
+          }[jobStatus]
+        "
+      >
+        {{ jobStatus }}
+      </p>
+    </div>
+    <p class="text-[rgb(77,97,130)] text-base md:text-xs">
+      {{ companyName }}
+      <span class="text-gray-500">· {{ job.company?.city }}</span>
+    </p>
+    <p class="text-green-600 text-base md:text-xs">
+      {{ formatPostDate(job.createDate) }}
+    </p>
+
+    <div
+      class="flex flex-wrap text-base md:text-xs text-[rgb(77,97,130)] mt-1 gap-1"
+    >
+      <p class="bg-gray-100 px-2 py-1 font-medium rounded">
+        {{ job.workplace }}
+      </p>
+      <p class="bg-gray-100 px-2 py-1 font-medium rounded">
+        {{ job.category }}
+      </p>
+    </div>
+
+    <p class="text-[rgb(77,97,130)] text-base md:text-xs mt-1 line-clamp-3">
+      {{ skills }}
+    </p>
+  </div>
+
+  <div class="w-56 h-24 md:w-32 flex-shrink-0">
+    <img
+      [src]="logoCompany || defaultImage"
+      alt="Company Logo"
+      class="w-full h-full object-contain"
+    />
+  </div>
+</div>

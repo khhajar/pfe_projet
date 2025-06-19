@@ -1,0 +1,58 @@
+<div class="mb-4">
+  <div
+    class="flex justify-between items-center cursor-pointer"
+    (click)="toggleSection()"
+  >
+    <h3 class="text-base font-semibold !m-0 capitalize">{{ title }}</h3>
+    <i
+      class="fa"
+      [ngClass]="{ 'fa-chevron-down': !expanded, 'fa-chevron-up': expanded }"
+      aria-hidden="true"
+    ></i>
+  </div>
+
+  <div *ngIf="expanded" class="flex flex-col gap-2 mt-1">
+    <form [formGroup]="form">
+      <!-- Select All Checkbox -->
+      <div class="px-2">
+        <label class="flex items-center gap-2 cursor-pointer mb-2">
+          <input
+            type="checkbox"
+            [checked]="isSelectAllChecked"
+            (change)="toggleSelectAll($event)"
+            class="hidden peer"
+          />
+          <span
+            class="custom-checkbox w-5 h-5 border-2 border-gray-300 flex justify-center items-center peer-checked:bg-blue-500 peer-checked:border-blue-500"
+          >
+            <i class="fa fa-check text-white hidden peer-checked:inline"></i>
+          </span>
+          <span class="text-[rgb(77,97,130)] text-sm">Select All</span>
+        </label>
+      </div>
+
+      <!-- Options Checkboxes -->
+      <div formArrayName="options" class="px-2">
+        <label
+          *ngFor="let option of options; let i = index"
+          class="flex items-center gap-2 cursor-pointer mb-2"
+        >
+          <input
+            type="checkbox"
+            [formControlName]="i"
+            class="hidden peer"
+            (change)="onOptionToggle()"
+          />
+          <span
+            class="custom-checkbox w-5 h-5 border-2 border-gray-300 flex justify-center items-center peer-checked:bg-blue-500 peer-checked:border-blue-500"
+          >
+            <i class="fa fa-check text-white hidden peer-checked:inline"></i>
+          </span>
+          <span class="text-[rgb(77,97,130)] text-sm capitalize">{{
+            option
+          }}</span>
+        </label>
+      </div>
+    </form>
+  </div>
+</div>

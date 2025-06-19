@@ -1,0 +1,63 @@
+<div
+  *ngIf="isLoading"
+  class="bg-white p-6 border border-gray-300 mx-auto max-w-4xl mb-3"
+>
+  <app-spinner-local></app-spinner-local>
+</div>
+
+<ng-container *ngIf="!isLoading">
+  <div class="bg-white p-6 border border-gray-300 mx-auto max-w-4xl mb-3">
+    <p class="text-lg font-bold capitalize mb-5">
+      What is your current career level?
+    </p>
+    <app-carte-selector
+      [items]="careerLevels"
+      [selectedItem]="selectedCareerLevel"
+      [gridClass]="'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4'"
+      (selectionChange)="selectedCareerLevel = $event"
+    >
+    </app-carte-selector>
+  </div>
+
+  <div class="bg-white p-6 border border-gray-300 mx-auto max-w-4xl mb-3">
+    <p class="text-lg font-bold capitalize mb-5">
+      What type(s) of job are you open to?
+    </p>
+    <app-carte-selector
+      [items]="jobTypes"
+      [selectedItem]="selectedJobType"
+      [gridClass]="
+        'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+      "
+      (selectionChange)="selectedJobType = $event"
+    >
+    </app-carte-selector>
+  </div>
+
+  <div class="bg-white p-6 border border-gray-300 mx-auto max-w-4xl mb-3">
+    <p class="text-lg font-bold capitalize mb-5">
+      What is your preferred workplace setting?
+    </p>
+    <app-carte-selector
+      [items]="workplaces"
+      [selectedItem]="selectedWorkplace"
+      [gridClass]="
+        'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5'
+      "
+      (selectionChange)="selectedWorkplace = $event"
+    >
+    </app-carte-selector>
+  </div>
+
+  <div class="flex m-0 p-3">
+    <button
+      [disabled]="
+        !selectedWorkplace || !selectedJobType || !selectedCareerLevel
+      "
+      (click)="onSave()"
+      class="text-white bg-primary transition-all px-5 py-2 rounded-sm font-medium w-full sm:w-auto disabled:bg-gray-300 disabled:cursor-not-allowed"
+    >
+      Save Changes
+    </button>
+  </div>
+</ng-container>

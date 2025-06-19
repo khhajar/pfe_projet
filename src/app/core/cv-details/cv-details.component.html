@@ -1,0 +1,224 @@
+<div
+  class="bg-gray-100 min-h-screen flex flex-col items-center justify-start p-5"
+>
+  <div
+    *ngIf="isLoading; else notLoading"
+    class="bg-white border border-gray-300 p-6 mt-4 w-full max-w-2xl md:w-2/3 text-center"
+  >
+    <app-spinner-local></app-spinner-local>
+  </div>
+  <ng-template #notLoading>
+    <ng-container *ngIf="candidate; else noCandidateDetails">
+      <!-- CV Card -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-4 w-full max-w-2xl md:w-2/3 flex flex-col md:flex-row justify-between items-center"
+      >
+        <div class="flex flex-col">
+          <button
+            (click)="goBack()"
+            class="mb-4 text-primary text-base hover:text-hoverPrimary flex items-center"
+          >
+            <i class="fa fa-chevron-left mr-2" aria-hidden="true"></i>
+            Back
+          </button>
+          <h1
+            class="text-2xl md:text-3xl font-semibold capitalize text-gray-800"
+          >
+            {{ candidate.firstName }}
+            <span class="uppercase">{{ candidate.lastName }}</span>
+          </h1>
+          <p class="text-gray-500 text-sm mt-2 capitalize">
+            {{ candidate.jobTitle }},
+            <span
+              class="bg-gray-200 px-2 py-1 font-medium rounded-sm capitalize"
+              >{{ candidate.gender }}</span
+            >
+          </p>
+          <p class="text-primary text-sm mt-2">
+            {{ candidate.city + ', ' + candidate.phone }}
+          </p>
+
+          <div
+            class="flex items-center w-full mt-5"
+            *ngIf="candidate.resume?.url"
+          >
+            <a
+              [href]="candidate.resume?.url"
+              target="_blank"
+              class="bg-primary hover:bg-hoverPrimary text-white font-medium px-5 py-2 transition duration-300"
+            >
+              Download CV
+            </a>
+          </div>
+        </div>
+        <div class="w-56 h-24 md:w-32 md:h-32 mt-4 md:mt-0">
+          <img
+            src="{{ candidate.profilePicture || defaultImage }}"
+            class="w-full h-full object-cover rounded-md"
+            alt="Candidate Image"
+          />
+        </div>
+      </div>
+
+      <!-- Profile Section -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-5 w-full max-w-2xl md:w-2/3"
+      >
+        <p class="font-bold text-lg mb-3">Profile</p>
+        <p class="text-sm text-gray-600">
+          {{ candidate.achievements || 'No achievements ' }}
+        </p>
+      </div>
+
+      <!-- Skills Section -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-5 w-full max-w-2xl md:w-2/3"
+      >
+        <p class="font-bold text-lg mb-3">Skills</p>
+        <div class="flex flex-wrap gap-2">
+          <ng-container *ngFor="let skill of candidate.skills">
+            <p class="bg-gray-300 rounded-lg text-sm px-2 py-1 capitalize">
+              {{ skill.skillName }}
+            </p>
+          </ng-container>
+          <p *ngIf="!candidate.skills" class="text-sm text-gray-600">
+            No skills
+          </p>
+        </div>
+      </div>
+
+      <!-- Education Section -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-5 w-full max-w-2xl md:w-2/3"
+      >
+        <p class="font-bold text-lg mb-3">Education</p>
+        <ul class="list-disc list-inside">
+          <ng-container *ngFor="let education of candidate.education?.degrees">
+            <li class="text-sm capitalize">
+              {{ education.level }} in {{ education.fieldOfStudy }} from
+              {{ education.university }} ({{
+                education.startDate | date : 'yyyy'
+              }}
+              - {{ education.endDate | date : 'yyyy' }})
+            </li>
+          </ng-container>
+          <p
+            *ngIf="!candidate.education?.degrees"
+            class="text-sm text-gray-600 capitalize"
+          >
+            No educations
+          </p>
+        </ul>
+      </div>
+
+      <!-- Experience Section -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-5 w-full max-w-2xl md:w-2/3"
+      >
+        <p class="font-bold text-lg mb-3">Experience</p>
+        <ul class="list-disc list-inside">
+          <ng-container
+            *ngFor="let experience of candidate.experience?.activities"
+          >
+            <li class="text-sm capitalize">
+              {{ experience.jobTitle }} at {{ experience.company }} ({{
+                experience.startDate | date : 'yyyy'
+              }}
+              -
+              {{
+                experience.currentlyWorking
+                  ? 'Present'
+                  : (experience.endDate | date : 'yyyy')
+              }})
+            </li>
+          </ng-container>
+          <p
+            *ngIf="!candidate.experience?.activities"
+            class="text-sm text-gray-600 capitalize"
+          >
+            No experiences
+          </p>
+        </ul>
+      </div>
+
+      <!-- Certifications Section -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-5 w-full max-w-2xl md:w-2/3"
+      >
+        <p class="font-bold text-lg mb-3">Certifications</p>
+        <ul class="list-disc list-inside">
+          <ng-container *ngFor="let certification of candidate.certifications">
+            <li class="text-sm capitalize">
+              {{ certification.name }} ({{
+                certification.date | date : 'yyyy'
+              }})
+            </li>
+          </ng-container>
+          <p
+            *ngIf="!candidate.certifications"
+            class="text-sm text-gray-600 capitalize"
+          >
+            No certificates
+          </p>
+        </ul>
+      </div>
+
+      <!-- Languages Section -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-5 w-full max-w-2xl md:w-2/3"
+      >
+        <p class="font-bold text-lg mb-3">Languages</p>
+        <ul class="list-disc list-inside">
+          <ng-container *ngFor="let language of candidate.languages">
+            <li class="text-sm capitalize">
+              {{ language.languageName }} - {{ language.level }}
+            </li>
+          </ng-container>
+          <p
+            *ngIf="!candidate.languages"
+            class="text-sm text-gray-600 capitalize"
+          >
+            No languages
+          </p>
+        </ul>
+      </div>
+
+      <!-- Career Interests Section -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-5 w-full max-w-2xl md:w-2/3"
+      >
+        <ng-container *ngIf="candidate.careerInterest">
+          <p class="font-bold text-lg mb-3">Career Interests</p>
+          <ul class="list-disc list-inside">
+            <li class="text-sm capitalize">
+              Career Level: {{ candidate.careerInterest.careerLevel }}
+            </li>
+            <li class="text-sm capitalize">
+              Job Type: {{ candidate.careerInterest.jobType }}
+            </li>
+            <li class="text-sm capitalize">
+              Preferred Workplace:
+              {{ candidate.careerInterest.workplacePreferred }}
+            </li>
+          </ul>
+        </ng-container>
+        <p
+          *ngIf="!candidate.careerInterest"
+          class="text-sm text-gray-600 capitalize"
+        >
+          No career interests
+        </p>
+      </div>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #noCandidateDetails>
+    <div
+      class="bg-white border border-gray-300 p-6 mt-4 w-full max-w-2xl md:w-2/3 text-center"
+    >
+      <p class="font-semibold text-base">No candidate details available</p>
+    </div>
+  </ng-template>
+</div>
+
+<app-footer></app-footer>

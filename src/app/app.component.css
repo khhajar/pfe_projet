@@ -1,0 +1,15 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.content-container {
+  position: absolute;
+  top: 3rem; /*53px;*/
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+}

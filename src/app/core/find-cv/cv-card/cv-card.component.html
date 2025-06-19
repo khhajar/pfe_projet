@@ -1,0 +1,53 @@
+<div
+  class="bg-white p-3 flex flex-col md:flex-row justify-between items-start md:items-center shadow-sm gap-3"
+>
+  <div class="w-56 h-24 md:w-24 flex-shrink-0">
+    <img
+      [src]="candidate.profilePicture || defaultImage"
+      alt="Job Image"
+      class="w-full h-full rounded-md object-cover"
+    />
+  </div>
+  <div class="w-full md:flex-1 pr-2">
+    <a
+      [routerLink]="['/cv', candidate.userId]"
+      class="text-lg md:text-sm font-semibold text-primary underline capitalize"
+    >
+      {{ candidate.firstName }}
+      <span class="uppercase">{{ candidate.lastName }}</span>
+    </a>
+    <p class="text-[rgb(77,97,130)] text-base md:text-xs">
+      {{ candidate.jobTitle }}
+      <span class="text-primary font-semibold">· {{ candidate.city }}</span>
+    </p>
+
+    <div
+      class="flex flex-wrap text-base md:text-xs text-[rgb(77,97,130)] mt-1 gap-1"
+    >
+      <p class="font-medium rounded-sm">
+        <span
+          *ngIf="candidate.careerInterest?.workplacePreferred"
+          class="bg-gray-200 mr-1 px-1 capitalize"
+        >
+          {{ candidate.careerInterest?.workplacePreferred }}</span
+        >
+        <span
+          class="bg-gray-200 text-black px-1 mr-1 font-medium rounded-sm capitalize"
+          >{{ candidate.gender }}
+        </span>
+        <span
+          *ngIf="candidate.careerInterest?.careerLevel"
+          class="text-white bg-primary px-1 font-semibold capitalize"
+          >· {{ candidate.careerInterest?.careerLevel }}</span
+        >
+      </p>
+    </div>
+
+    <p
+      *ngIf="candidate.achievements"
+      class="text-[rgb(77,97,130)] text-base md:text-xs font-semibold line-clamp-3"
+    >
+      {{ candidate.achievements }}
+    </p>
+  </div>
+</div>

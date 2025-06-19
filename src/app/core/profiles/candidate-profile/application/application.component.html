@@ -1,0 +1,63 @@
+<div class="bg-gray-100 min-h-[92vh] flex justify-center items-start">
+  <div class="w-full sm:w-5/6 p-6 mt-10">
+    <div class="flex flex-col md:flex-row justify-between gap-4">
+      <div class="w-full md:w-1/2">
+        <div class="flex flex-wrap justify-start pb-2">
+          <a
+            *ngFor="let tab of tabs"
+            (click)="setSelectedTab(tab)"
+            [ngClass]="{
+              'text-primary border-b-4 border-primary': selectedTab === tab,
+              'text-blue-950': selectedTab !== tab
+            }"
+            class="text-sm font-semibold uppercase cursor-pointer px-2"
+          >
+            {{ tab | titlecase }}
+          </a>
+        </div>
+        <div
+          *ngIf="selectedTab == 'applications'"
+          class="flex mb-2 md:w-2/3 w-full"
+        >
+          <button
+            *ngFor="let filter of filterOptions"
+            [ngClass]="{
+              'bg-primary text-white': activeFilter === filter.value,
+              'bg-white text-black border-2 border-gray-200':
+                activeFilter !== filter.value
+            }"
+            (click)="filterJobs(filter.value)"
+            class="opacity-90 text-xs font-semibold px-2 py-1 rounded-sm mr-2"
+          >
+            {{ filter.label }}
+          </button>
+        </div>
+
+        <div class="w-full flex flex-col justify-center">
+          <!-- Display spinner while loading -->
+          <app-spinner-local *ngIf="isLoading"></app-spinner-local>
+
+          <!-- Display "No Job" if no data available -->
+          <div
+            *ngIf="!isLoading && filteredJobs.length === 0"
+            class="text-center text-gray-500"
+          >
+            No Job Available
+          </div>
+
+          <!-- Display job cards when data is available -->
+          <ng-container *ngIf="!isLoading && filteredJobs.length > 0">
+            <ng-container *ngFor="let item of filteredJobs">
+              <app-job-card
+                [job]="item"
+                [selectedTab]="selectedTab"
+                [jobStatus]="getJobStatus(item.jobId)"
+                class="mb-3 flex border w-full border-gray-200"
+              ></app-job-card>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

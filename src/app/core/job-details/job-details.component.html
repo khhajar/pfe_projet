@@ -1,0 +1,159 @@
+<div
+  class="bg-gray-100 min-h-screen flex flex-col items-center justify-start p-5"
+>
+  <div
+    *ngIf="isLoading; else notLoading"
+    class="bg-white border border-gray-300 p-6 mt-4 w-full max-w-2xl md:w-2/3 text-center"
+  >
+    <app-spinner-local></app-spinner-local>
+  </div>
+  <ng-template #notLoading>
+    <ng-container *ngIf="job; else noJobDetails">
+      <!-- Job Card -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-4 w-full max-w-2xl md:w-2/3 flex flex-col md:flex-row justify-between items-center"
+      >
+        <div class="flex flex-col">
+          <button
+            onclick="history.back()"
+            class="mb-4 text-primary text-base hover:text-hoverPrimary flex items-center"
+          >
+            <i class="fa fa-chevron-left mr-2" aria-hidden="true"></i>
+            Back
+          </button>
+          <h1 class="text-2xl md:text-3xl font-semibold text-gray-800">
+            {{ job.title }}
+            <span
+              *ngIf="job.isClosed"
+              [ngClass]="
+                'bg-red-600 hover:bg-red-400 text-white font-semibold text-sm rounded-sm px-2 py-1 ml-1 capitalize'
+              "
+            >
+              <i class="fa fa-ban"></i> Closed
+            </span>
+          </h1>
+          <p class="font-semibold text-primary text-sm mt-2 underline-offset-1">
+            {{ companyName }}
+          </p>
+          <div class="flex items-center space-x-3 mt-2">
+            <span class="bg-gray-500 text-white text-sm px-2 py-1 rounded">
+              {{ job.jobType }}
+            </span>
+            <span class="text-gray-600"> {{ job.workplace }} </span>
+          </div>
+          <p class="text-primary text-sm mt-2">{{ job.company?.city }}</p>
+          <p class="text-gray-500 text-sm mt-2">
+            {{ formatPostDate(job.createDate) }}
+          </p>
+          <div class="flex items-center w-full mt-5">
+            <ng-container *ngIf="!job.isClosed">
+              <p
+                *ngIf="applied"
+                class="capitalize bg-green-600 px-5 py-2 text-white font-semibold !m-0"
+              >
+                You are applying this Job
+              </p>
+              <button
+                *ngIf="!applied"
+                (click)="applyJob()"
+                class="bg-primary hover:bg-hoverPrimary text-white font-medium px-5 py-2 transition duration-300"
+              >
+                Apply for Job
+              </button>
+            </ng-container>
+
+            <div
+              *ngIf="!applied && !job.isClosed"
+              class="flex items-center space-x-3 ml-3"
+            >
+              <div
+                (click)="toggleSavedJob()"
+                class="bg-gray-200 flex justify-center items-center p-2 border border-gray-300 cursor-pointer hover:bg-gray-300 transition duration-300"
+              >
+                <i
+                  *ngIf="!saved"
+                  class="fa fa-bookmark-o text-2xl text-gray-400"
+                ></i>
+                <i
+                  *ngIf="saved"
+                  class="fa fa-bookmark text-2xl text-primary"
+                ></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-56 h-24 md:w-44 md:h-44 mt-4 md:mt-0">
+          <img
+            [src]="companyLogo || defaultImage"
+            class="w-full h-full object-contain rounded-md"
+            alt="Developer"
+          />
+        </div>
+      </div>
+
+      <!-- Job Details -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-5 w-full max-w-2xl md:w-2/3"
+      >
+        <p class="font-bold text-lg mb-3">Job Details</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p class="text-gray-500">Experience Needed:</p>
+            <p class="text-gray-500">Career Level:</p>
+            <p class="text-gray-500">Job Categories:</p>
+          </div>
+          <div>
+            <p class="text-black">{{ job.experience }} Years</p>
+            <p class="text-black">{{ job.careerLevel }} Level</p>
+            <p class="text-black">{{ job.category }}</p>
+          </div>
+        </div>
+        <div class="bg-gray-100 p-4 rounded-sm border border-gray-300 mt-4">
+          <p class="text-gray-500 text-lg">Skills And Tools:</p>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <ng-container *ngFor="let skill of job.skills">
+              <p class="bg-gray-300 rounded-lg text-sm px-2 py-1 capitalize">
+                {{ skill }}
+              </p>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job Description -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-5 w-full max-w-2xl md:w-2/3"
+      >
+        <p class="font-bold text-lg mb-3">Job Description</p>
+        <ul class="list-disc list-inside">
+          <ng-container *ngFor="let description of job.descriptions">
+            <li class="text-sm capitalize">{{ description }}</li>
+          </ng-container>
+        </ul>
+      </div>
+
+      <!-- Job Requirements -->
+      <div
+        class="bg-white border border-gray-300 p-6 mt-5 w-full max-w-2xl md:w-2/3"
+      >
+        <p class="font-bold text-lg mb-3">Job Requirements</p>
+        <ul class="list-disc list-inside">
+          <ng-container *ngFor="let requirement of job.requirements">
+            <li class="text-sm capitalize">{{ requirement }}</li>
+          </ng-container>
+        </ul>
+      </div>
+    </ng-container>
+  </ng-template>
+
+  <!-- Fallback Message -->
+  <ng-template #noJobDetails>
+    <div
+      class="bg-white border border-gray-300 p-6 mt-4 w-full max-w-2xl md:w-2/3 text-center"
+    >
+      <p class="font-semibold text-base">No job details available</p>
+    </div>
+  </ng-template>
+</div>
+
+<app-footer></app-footer>

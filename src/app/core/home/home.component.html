@@ -1,0 +1,112 @@
+<app-welcome-screen></app-welcome-screen>
+
+<!-- Who's Hiring Section -->
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="text-center py-20 flex flex-col items-center">
+    <p class="text-2xl text-primary font-bold">Trusted By 1000+ Companies</p>
+    <div class="flex flex-wrap justify-center gap-8 mt-12">
+      <img
+        *ngFor="let logo of companies"
+        [src]="pathCompanyImages + logo"
+        class="h-16"
+        alt="Company Logo"
+      />
+    </div>
+  </div>
+</div>
+
+<!-- Latest Jobs -->
+<div class="bg-gray-100 w-full py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <p
+      class="text-3xl font-bold text-gray-800 border-b-4 border-primary w-max pb-2"
+    >
+      Latest Jobs
+    </p>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8"
+    >
+      <ng-container *ngIf="isLoading; else notLoading">
+        <div class="w-full flex justify-center items-center">
+          <app-spinner-local></app-spinner-local>
+        </div>
+      </ng-container>
+      <ng-template #notLoading>
+        <div
+          *ngFor="let job of lastJobs"
+          class="bg-white shadow-lg border border-gray-300 rounded-lg p-4"
+        >
+          <p class="text-base font-semibold text-primary block">
+            {{ job.title }}
+          </p>
+          <p class="text-gray-600 mt-1">
+            {{ job.careerLevel }} - {{ job.company?.city }}
+          </p>
+          <p class="text-gray-500 mt-1 text-sm">
+            {{ getFormatPostDate(job.createDate) }}
+          </p>
+        </div>
+      </ng-template>
+    </div>
+    <div class="flex justify-end mt-6">
+      <a
+        [routerLink]="['/find-job']"
+        class="text-primary font-medium hover:underline"
+        >See other jobs →</a
+      >
+    </div>
+  </div>
+</div>
+
+<!-- Join Section -->
+<div class="py-20 w-full text-center">
+  <p class="text-2xl md:text-3xl text-[#4d6182]">
+    Get Ready for More Opportunities
+  </p>
+  <p class="text-base text-[#4d6182]">
+    You are minutes away from the right job.
+  </p>
+  <button
+    (click)="goToRegistration()"
+    class="bg-primary text-white px-4 py-2 rounded-md font-bold md:font-normal text-xl md:text-lg mt-4 w-2/3 md:w-1/4"
+  >
+    Join Us
+  </button>
+</div>
+
+<!-- Job Types -->
+<div class="bg-gray-100 w-full py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <p
+      class="text-[2rem] md:text-3xl font-bold text-gray-800 border-b-4 border-primary w-max pb-2"
+    >
+      Job Types
+    </p>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-8"
+    >
+      <div
+        *ngFor="let jobType of jobTypes; trackBy: trackByIndex"
+        class="space-y-4"
+      >
+        <div class="p-4 bg-white rounded-lg shadow-md">
+          <div
+            class="flex flex-col items-center text-sm font-semibold text-primary"
+          >
+            <img
+              [src]="'/assets/images/' + jobType.image"
+              alt="Job Image"
+              class="w-56 h-36 sm:w-40 sm:h-40 rounded-md object-cover"
+            />
+            <span class="mt-2 text-lg md:text-base capitalize">{{
+              jobType.name
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>

@@ -1,0 +1,89 @@
+<div class="bg-white p-6 rounded-sm border border-gray-300">
+  <app-spinner-local *ngIf="isLoading"></app-spinner-local>
+  <ng-container *ngIf="!isLoading">
+    <!-- Upload CV - Show this if no file is uploaded -->
+    <div *ngIf="!uploadedUrl" class="flex flex-col justify-center items-center">
+      <i
+        class="fa fa-cloud-upload text-gray-400 upload-icon text-4xl mb-4"
+        aria-hidden="true"
+      ></i>
+      <button
+        class="text-white bg-primary hover:bg-hoverPrimary transition-all px-5 py-2 rounded-sm w-3/4 sm:w-1/3 font-medium mb-3"
+        (click)="triggerFileInput()"
+      >
+        Upload Your CV
+      </button>
+      <p class="text-sm text-center">
+        Drag and drop files here or click here to
+        <span class="text-primary">browse</span> a file to upload
+      </p>
+      <p class="text-xs text-gray-400 text-center">
+        Supported files: .docx, .doc, or .pdf, with a maximum size of 5MB
+      </p>
+    </div>
+
+    <!-- Loading - Show this while the file is being uploaded -->
+    <div
+      *ngIf="isUploading"
+      class="flex flex-col justify-center items-center p-14"
+    >
+      <p class="text-gray-400">Uploading...</p>
+    </div>
+
+    <!-- File preview and options - Show this after file is uploaded -->
+    <div
+      *ngIf="uploadedUrl"
+      class="flex flex-col justify-center items-center p-14"
+    >
+      <p class="text-gray-400 text-center">
+        You last updated your CV on {{ fileName }}.
+        <span
+          class="text-primary capitalize cursor-pointer"
+          (click)="downloadFile()"
+          >Preview CV</span
+        >
+        |
+        <span
+          class="text-red-600 capitalize cursor-pointer"
+          (click)="showDeleteConfirmation()"
+          >Delete!</span
+        >
+      </p>
+    </div>
+
+    <!-- Delete Confirmation Popup -->
+    <app-modal #deleteModal>
+      <div class="modal-header">
+        <p class="text-xl font-semibold capitalize">Warning</p>
+      </div>
+      <div class="modal-body">
+        <p class="text-blue-950 text-base">
+          Are you sure you want to delete the CV file from your profile?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          (click)="onModalClose()"
+          class="px-3 py-2 text-gray-600 bg-gray-100 outline-none border border-gray-500 mr-3 rounded-sm"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="deleteCv()"
+          class="px-3 py-2 text-white bg-red-500 outline-none rounded-sm"
+        >
+          Delete
+        </button>
+      </div>
+    </app-modal>
+
+    <!-- Upload input -->
+    <input
+      #fileInput
+      type="file"
+      class="hidden"
+      accept=".docx,.doc,.pdf"
+      (change)="onFileChange($event)"
+    />
+  </ng-container>
+</div>

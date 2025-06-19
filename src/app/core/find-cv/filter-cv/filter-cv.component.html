@@ -1,0 +1,48 @@
+<div class="bg-white border-solid border-2 border-gray-200 p-4">
+  <h2 class="text-lg font-semibold">Filters</h2>
+  <div class="text-sm text-gray-400 mb-2 flex justify-between">
+    <span>{{ selectedFiltersCount }} filter(s) selected</span>
+    <a
+      class="text-primary hover:underline cursor-pointer"
+      (click)="clearFilters()"
+      >Clear all filters</a
+    >
+  </div>
+  <hr class="border-t mb-5" />
+
+  <app-filter-block
+    title="Career Level"
+    selectedTitle="careerLevels"
+    [options]="careerLevelOptions"
+    [selected]="selectedFilters['careerLevels']"
+    (filterChange)="handleFilterChange($event)"
+    [clearFilters]="clearAllFilters"
+  ></app-filter-block>
+
+  <app-filter-block
+    title="Gender"
+    selectedTitle="genders"
+    [options]="GenderOptions"
+    [selected]="selectedFilters['genders']"
+    (filterChange)="handleFilterChange($event)"
+    [clearFilters]="clearAllFilters"
+  ></app-filter-block>
+
+  <app-filter-block
+    title="Job WorkPlace"
+    selectedTitle="workPlaces"
+    [options]="workPlaceOptions"
+    [selected]="selectedFilters['workPlaces']"
+    (filterChange)="handleFilterChange($event)"
+    [clearFilters]="clearAllFilters"
+  ></app-filter-block>
+
+  <app-filter-block
+    title="City"
+    selectedTitle="cities"
+    [options]="cityOptions"
+    [selected]="selectedFilters['cities']"
+    (filterChange)="handleFilterChange($event)"
+    [clearFilters]="clearAllFilters"
+  ></app-filter-block>
+</div>

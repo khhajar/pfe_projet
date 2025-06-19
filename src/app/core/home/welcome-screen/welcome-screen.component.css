@@ -1,0 +1,8 @@
+.welcome-image {
+  background-image: url('/assets/images/welcome-image.jpg');
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  height: 100vh;
+  background-repeat: no-repeat;
+}

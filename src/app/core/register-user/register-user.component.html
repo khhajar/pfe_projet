@@ -1,0 +1,186 @@
+<div
+  class="flex flex-col md:flex-row items-center justify-center min-h-[93vh] bg-gray-50"
+>
+  <!-- Image Section (Hidden on Small Screens) -->
+  <div class="hidden md:block w-1/2 container-img"></div>
+
+  <!-- Form Section -->
+  <div class="w-full md:w-1/2 flex justify-center h-full">
+    <div class="w-11/12 sm:w-3/4">
+      <button
+        (click)="goBack()"
+        class="mb-4 text-primary text-base hover:text-hoverPrimary flex items-center"
+      >
+        <i class="fa fa-chevron-left mr-2" aria-hidden="true"></i> Back
+      </button>
+
+      <h2 class="text-[2rem] font-semibold text-center text-gray-700 mb-6">
+        Join us - Create a Candidate Account
+      </h2>
+
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+        class="space-y-4"
+      >
+        <!-- First Name Field -->
+        <div>
+          <label
+            for="firstName"
+            class="block text-sm font-medium text-gray-600"
+          >
+            First Name
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            class="mt-1 p-2 w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="Enter your First Name"
+          />
+          <small
+            class="text-red-500 font-semibold"
+            *ngIf="
+              formControls['firstName'].touched &&
+              formControls['firstName'].invalid
+            "
+          >
+            First Name is required and must be at least 3 characters.
+          </small>
+        </div>
+
+        <!-- Last Name Field -->
+        <div>
+          <label for="lastName" class="block text-sm font-medium text-gray-600">
+            Last Name
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            class="mt-1 p-2 w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="Enter your Last Name"
+          />
+          <small
+            class="text-red-500 font-semibold"
+            *ngIf="
+              formControls['lastName'].touched &&
+              formControls['lastName'].invalid
+            "
+          >
+            Last Name is required and must be at least 3 characters.
+          </small>
+        </div>
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-600">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="mt-1 p-2 w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="Enter your email"
+          />
+          <small
+            class="text-red-500 font-semibold"
+            *ngIf="
+              formControls['email'].touched && formControls['email'].invalid
+            "
+          >
+            Please enter a valid email address.
+          </small>
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-600">
+            Password
+          </label>
+
+          <div class="relative">
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              class="mt-1 p-2 w-full border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary"
+              placeholder="Enter your password"
+            />
+            <span
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              (click)="passwordVisible = !passwordVisible"
+            >
+              <i
+                class="fa"
+                [ngClass]="passwordVisible ? 'fa-eye-slash' : 'fa-eye'"
+              ></i>
+            </span>
+          </div>
+          <small
+            class="text-red-500 font-semibold"
+            *ngIf="
+              formControls['password'].touched &&
+              formControls['password'].invalid
+            "
+          >
+            Password must be at least 6 characters.
+          </small>
+        </div>
+
+        <!--confirmation password-->
+        <div>
+          <label
+            for="confirmPassword"
+            class="block text-sm font-medium text-gray-600"
+          >
+            Confirm Password
+          </label>
+          <div class="relative">
+            <input
+              [type]="confirmPasswordVisible ? 'text' : 'password'"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              class="mt-1 p-2 w-full border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary"
+              placeholder="Confirm your password"
+            />
+            <span
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              (click)="confirmPasswordVisible = !confirmPasswordVisible"
+            >
+              <i
+                class="fa"
+                [ngClass]="confirmPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+              ></i>
+            </span>
+          </div>
+          <small
+            *ngIf="
+              registerForm.hasError('passwordMismatch') &&
+              registerForm.get('confirmPassword')?.touched
+            "
+            class="text-red-500 font-semibold"
+          >
+            Passwords do not match.
+          </small>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="isSubmitting || registerForm.invalid"
+          class="w-full mt-8 py-2 px-4 bg-primary text-white font-semibold hover:bg-hoverPrimary focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          {{ isSubmitting ? 'Signing Up...' : 'Sign Up' }}
+        </button>
+        <!-- Error Message -->
+        <small
+          *ngIf="errorMessage"
+          class="text-red-500 text-center font-semibold mt-1"
+        >
+          {{ errorMessage }}
+        </small>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,325 @@
+<div class="bg-gray-100 min-h-[92vh] flex justify-center items-start">
+  <div class="w-full sm:w-5/6 p-6 mt-5">
+    <div class="flex flex-col md:flex-row justify-between gap-4">
+      <!-- Jobs Section -->
+      <div class="w-full sm:w-4/12 lg:w-3/12">
+        <div class="flex justify-between pb-2 w-full md:w-3/4">
+          <p
+            class="text-base font-bold uppercase text-primary border-b-4 border-b-primary"
+          >
+            Jobs
+          </p>
+          <button
+            (click)="openModal()"
+            class="bg-primary text-xs font-semibold text-white px-2 py-2 sm:px-3"
+          >
+            + Add New Job
+          </button>
+        </div>
+        <div class="flex mb-2 md:w-2/3 w-full">
+          <button
+            [ngClass]="{
+              'bg-primary text-white': activeFilter === 'all',
+              'bg-white text-black border border-black': activeFilter !== 'all'
+            }"
+            (click)="filterJobs('all')"
+            class="opacity-90 text-xs font-semibold px-2 py-1 rounded-sm mr-2"
+          >
+            All
+          </button>
+          <button
+            [ngClass]="{
+              'bg-primary text-white': activeFilter === 'actived',
+              'bg-white text-black border border-black':
+                activeFilter !== 'actived'
+            }"
+            (click)="filterJobs('actived')"
+            class="opacity-90 text-xs font-semibold px-2 py-1 rounded-sm mr-2"
+          >
+            Actived
+          </button>
+          <button
+            [ngClass]="{
+              'bg-primary text-white': activeFilter === 'closed',
+              'bg-white text-black border border-black':
+                activeFilter !== 'closed'
+            }"
+            (click)="filterJobs('closed')"
+            class="opacity-90 text-xs font-semibold px-2 py-1 rounded-sm"
+          >
+            Closed
+          </button>
+        </div>
+        <app-spinner-local *ngIf="isLoading"></app-spinner-local>
+        <div *ngIf="!isLoading">
+          <ng-container *ngFor="let job of filteredJobs">
+            <a
+              [routerLink]="['/dashboard/overview', job.jobId]"
+              (click)="selectJob(job.jobId)"
+              class="w-full"
+            >
+              <div
+                [ngClass]="{
+                  'border-l-red-500': selectedJobId === job.jobId
+                }"
+                class="bg-white border-l-4 border-l-primary border-2 border-gray-200 p-3 mb-3 flex flex-col md:flex-row justify-between items-start md:items-center shadow-sm gap-3 w-full md:w-3/4"
+              >
+                <div class="w-full md:flex-1 pr-2">
+                  <p
+                    [ngClass]="{
+                      'font-bold text-red-600': selectedJobId === job.jobId
+                    }"
+                    class="text-lg md:text-sm font-semibold uppercase text-primary hover:underline"
+                  >
+                    {{ job.title }}
+                    <span
+                      *ngIf="job?.isClosed"
+                      class="bg-red-600 hover:bg-red-400 text-white font-semibold text-sm rounded-sm px-1 ml-1 capitalize"
+                    >
+                      <i class="fa fa-ban"></i>
+                    </span>
+                  </p>
+                  <p class="text-[rgb(77,97,130)] text-base md:text-xs">
+                    {{ formatPostDate(job.createDate) }}
+                  </p>
+                </div>
+              </div>
+            </a>
+          </ng-container>
+
+          <ng-container *ngIf="jobs.length < 1">
+            <span class="text-sm font-semibold">No Job Data!</span>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="w-full sm:w-8/12 lg:w-9/12 mx-auto">
+        <div class="flex flex-col sm:flex-row justify-evenly pb-2">
+          <a
+            *ngFor="let tab of tabs"
+            [routerLink]="['/dashboard', tab, selectedJobId]"
+            routerLinkActive="'border-b-4 border-primary text-primary font-bold underline"
+            class="text-sm text-gray-600 font-semibold uppercase cursor-pointer border-b-4 border-transparent px-2 py-1 mb-2 sm:mb-0"
+          >
+            {{ tab | titlecase }}
+          </a>
+        </div>
+        <div class="border mt-2"></div>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal #addJobModal>
+  <div class="modal-header">
+    <p class="text-lg font-semibold text-gray-800">Add Job</p>
+  </div>
+  <ng-container class="modal-body">
+    <form [formGroup]="jobForm" (ngSubmit)="saveJob()">
+      <div class="max-h-[52vh] overflow-y-auto space-y-4 pr-3">
+        <!-- Job Type -->
+        <div class="flex flex-col">
+          <label class="text-gray-700 font-semibold mb-1 text-sm"
+            >Job Type</label
+          >
+          <app-carte-selector
+            [items]="jobTypes"
+            [selectedItem]="jobForm.get('jobType')?.value"
+            [gridClass]="'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3'"
+            (selectionChange)="jobForm.controls['jobType'].setValue($event)"
+          >
+          </app-carte-selector>
+          <small
+            class="text-red-600 font-semibold"
+            *ngIf="
+              jobForm.get('jobType')?.invalid && jobForm.get('jobType')?.touched
+            "
+          >
+            Please select a job type.
+          </small>
+        </div>
+        <!-- Job Title -->
+        <div class="flex flex-col">
+          <label class="text-gray-700 font-semibold mb-1 text-sm"
+            >Job Title</label
+          >
+          <input
+            formControlName="title"
+            placeholder="Enter job title"
+            class="w-full border border-gray-300 p-2 rounded-sm bg-gray-50 outline-none focus:border-2 focus:border-primary"
+            type="text"
+          />
+          <small
+            class="text-red-600 font-semibold"
+            *ngIf="
+              jobForm.get('title')?.invalid && jobForm.get('title')?.touched
+            "
+          >
+            Job title is required.
+          </small>
+        </div>
+
+        <!-- Job Category (Dropdown) -->
+        <div class="flex flex-col">
+          <label class="text-gray-700 font-semibold mb-1 text-sm"
+            >Job Category</label
+          >
+          <select
+            formControlName="category"
+            class="w-full border border-gray-300 p-2 rounded-sm bg-gray-50 outline-none focus:border-2 focus:border-primary"
+          >
+            <option value="" disabled>Select a category</option>
+            <option *ngFor="let category of jobCategories" [value]="category">
+              {{ category }}
+            </option>
+          </select>
+          <small
+            class="text-red-600 font-semibold"
+            *ngIf="
+              jobForm.get('category')?.invalid &&
+              jobForm.get('category')?.touched
+            "
+          >
+            Please select a category.
+          </small>
+        </div>
+
+        <!-- Workplace (Dropdown) -->
+        <div class="flex flex-col">
+          <label class="text-gray-700 font-semibold mb-1 text-sm"
+            >Workplace</label
+          >
+          <select
+            formControlName="workplace"
+            class="w-full border border-gray-300 p-2 rounded-sm bg-gray-50 outline-none focus:border-2 focus:border-primary"
+          >
+            <option value="" disabled>Select workplace</option>
+            <option *ngFor="let place of workplaceOptions" [value]="place">
+              {{ place }}
+            </option>
+          </select>
+          <small
+            class="text-red-600 font-semibold"
+            *ngIf="
+              jobForm.get('workplace')?.invalid &&
+              jobForm.get('workplace')?.touched
+            "
+          >
+            Please select a workplace.
+          </small>
+        </div>
+
+        <!-- Career Level (Dropdown) -->
+        <div class="flex flex-col">
+          <label class="text-gray-700 font-semibold mb-1 text-sm"
+            >Career Level</label
+          >
+          <select
+            formControlName="careerLevel"
+            class="w-full border border-gray-300 p-2 rounded-sm bg-gray-50 outline-none focus:border-2 focus:border-primary"
+          >
+            <option value="" disabled>Select career level</option>
+            <option *ngFor="let level of careerLevels" [value]="level">
+              {{ level }}
+            </option>
+          </select>
+          <small
+            class="text-red-600 font-semibold"
+            *ngIf="
+              jobForm.get('careerLevel')?.invalid &&
+              jobForm.get('careerLevel')?.touched
+            "
+          >
+            Please select a career level.
+          </small>
+        </div>
+
+        <!-- Years of Experience -->
+        <div class="flex flex-col">
+          <label class="text-gray-700 font-semibold mb-1 text-sm"
+            >Years of Experience</label
+          >
+          <select
+            formControlName="experience"
+            class="w-full border border-gray-300 p-2 rounded-sm bg-gray-50"
+          >
+            <option value="" disabled>Select years of experience</option>
+            <option *ngFor="let item of experienceYears" [value]="item">
+              {{ item }}
+            </option>
+          </select>
+          <small
+            class="text-red-600 font-semibold"
+            *ngIf="
+              jobForm.get('experience')?.invalid &&
+              jobForm.get('experience')?.touched
+            "
+          >
+            Please select a year of experience.
+          </small>
+        </div>
+
+        <!-- Skills-->
+        <div class="flex flex-col">
+          <label class="text-gray-700 font-semibold mb-1 text-sm">Skills</label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Select Skill</mat-label>
+            <mat-select
+              formControlName="skills"
+              multiple
+              (selectionChange)="filterSkills()"
+            >
+              <input
+                [(ngModel)]="searchSkill"
+                (input)="filterSkills()"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Search skills..."
+                class="w-full border-0 outline-none p-2"
+              />
+              <mat-option *ngFor="let skill of filteredSkills" [value]="skill">
+                {{ skill }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <small
+            class="text-red-600 font-semibold"
+            *ngIf="
+              jobForm.get('skills')?.invalid && jobForm.get('skills')?.touched
+            "
+          >
+            skills are required!
+          </small>
+        </div>
+
+        <!-- Job Description & Requirement -->
+        <div class="flex flex-col">
+          <app-job-description
+            [formArray]="descriptions"
+            label="Job Description"
+          ></app-job-description>
+          <app-job-description
+            [formArray]="requirements"
+            label="Job Requirements"
+          ></app-job-description>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer flex justify-end space-x-3 mt-4">
+        <button
+          (click)="onModalClose()"
+          class="px-4 py-2 text-gray-600 bg-gray-200 hover:bg-gray-300 transition"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 text-white bg-primary hover:bg-hoverPrimary transition"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</app-modal>

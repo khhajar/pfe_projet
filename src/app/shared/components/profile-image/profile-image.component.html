@@ -1,0 +1,36 @@
+<div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-5">
+  <div
+    class="flex items-center justify-center bg-gray-200 w-32 h-32 rounded-lg"
+  >
+    <img
+      *ngIf="profileImage"
+      [src]="profileImage || defaultImage"
+      alt="Profile Image"
+      class="w-full h-full object-contain"
+    />
+    <div *ngIf="!profileImage" class="text-gray-500">No Image</div>
+  </div>
+
+  <div class="flex flex-col sm:ml-5 text-center sm:text-left">
+    <p class="text-lg font-semibold capitalize mb-1">Profile Photo</p>
+    <span class="text-sm text-gray-400 mb-3 block">
+      You can upload a .jpg, .png, or .gif photo with max size of 5MB.
+    </span>
+
+    <div class="flex flex-col sm:flex-row items-center gap-3">
+      <button
+        class="bg-primary text-white px-4 py-2 w-full sm:w-auto"
+        (click)="fileInput.click()"
+      >
+        Upload Image
+      </button>
+    </div>
+  </div>
+  <input
+    type="file"
+    #fileInput
+    accept="image/*"
+    class="hidden"
+    (change)="onFileSelected($event)"
+  />
+</div>

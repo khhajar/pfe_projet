@@ -1,0 +1,42 @@
+<div class="mb-4">
+  <div
+    class="flex justify-between items-center cursor-pointer"
+    (click)="isExpanded = !isExpanded"
+  >
+    <h3 class="text-base font-semibold">{{ title }}</h3>
+    <i
+      class="fa"
+      [ngClass]="{
+        'fa-chevron-down': !isExpanded,
+        'fa-chevron-up': isExpanded
+      }"
+      aria-hidden="true"
+    ></i>
+  </div>
+  <div *ngIf="isExpanded" class="flex flex-col justify-between gap-2 mt-2">
+    <div class="px-4">
+      <label
+        *ngFor="let option of options; let i = index"
+        class="flex items-center gap-2 cursor-pointer"
+      >
+        <!-- Hidden radio button -->
+        <input
+          type="radio"
+          name="custom-radio-group"
+          [value]="option"
+          [(ngModel)]="selectedOption"
+          class="hidden peer"
+        />
+
+        <!-- Custom radio button -->
+        <span
+          class="custom-radio w-5 h-5 border-2 border-gray-300 rounded-full flex justify-center items-center peer-checked:bg-blue-500 peer-checked:border-blue-500"
+        >
+          <i class="fa fa-circle text-white hidden peer-checked:inline"></i>
+        </span>
+
+        <span class="text-[rgb(77,97,130)]">{{ option }}</span>
+      </label>
+    </div>
+  </div>
+</div>

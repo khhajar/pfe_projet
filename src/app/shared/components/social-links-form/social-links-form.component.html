@@ -1,0 +1,30 @@
+<div class="bg-white p-6 border border-gray-300 mx-auto max-w-4xl">
+  <p class="text-xl font-bold capitalize mb-5">Your Online Presence</p>
+  <app-spinner-local *ngIf="isLoading"></app-spinner-local>
+  <form *ngIf="!isLoading" [formGroup]="socialLinksForm" (ngSubmit)="onSave()">
+    <div class="grid gap-2 mb-3 w-full">
+      <ng-container *ngFor="let field of fields">
+        <label class="text-gray-600 text-base capitalize self-center">
+          {{ field.label }}
+        </label>
+        <input
+          type="text"
+          formControlName="{{ field.key }}"
+          class="w-full p-2 border border-gray-300 rounded-sm bg-gray-100 outline-none"
+          [placeholder]="field.placeholder"
+        />
+        <small class="text-red-500 font-semibold" *ngIf="isInvalid(field.key)">
+          {{ getErrorMessage(field.key) }}
+        </small>
+      </ng-container>
+    </div>
+
+    <button
+      [disabled]="socialLinksForm.invalid"
+      type="submit"
+      class="text-white bg-primary hover:bg-hoverPrimary transition-all px-5 py-2 rounded-sm font-medium w-full sm:w-auto disabled:bg-gray-300 disabled:cursor-not-allowed"
+    >
+      Save Changes
+    </button>
+  </form>
+</div>

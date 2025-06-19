@@ -1,0 +1,160 @@
+<div
+  class="flex flex-col lg:flex-row items-center justify-center min-h-[93vh] bg-gray-50"
+>
+  <!-- Form Section -->
+  <div class="w-full lg:w-1/2 flex justify-center p-6">
+    <div class="w-full max-w-md">
+      <button
+        onclick="history.back()"
+        class="mb-4 text-primary text-base hover:text-hoverPrimary flex items-center"
+      >
+        <i class="fa fa-chevron-left mr-2" aria-hidden="true"></i>
+        <span>Back</span>
+      </button>
+
+      <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">
+        Join us - Create a Hiring Account
+      </h2>
+
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+        class="space-y-4"
+      >
+        <div>
+          <label
+            for="companyName"
+            class="block text-sm font-medium text-gray-600"
+          >
+            Company Name
+          </label>
+          <input
+            type="text"
+            id="companyName"
+            formControlName="companyName"
+            class="mt-1 p-2 w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="Enter your Company Name"
+          />
+          <small
+            *ngIf="
+              formControls['companyName'].invalid &&
+              formControls['companyName'].touched
+            "
+            class="text-red-500 font-semibold"
+          >
+            Valid Company Name is required and must be at least 3 characters.
+          </small>
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-600">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="mt-1 p-2 w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="Enter your email"
+          />
+          <small
+            *ngIf="
+              formControls['email'].invalid && formControls['email'].touched
+            "
+            class="text-red-500 font-semibold"
+          >
+            Valid email is required.
+          </small>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-600">
+            Password
+          </label>
+          <div class="relative">
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              class="mt-1 p-2 w-full border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary"
+              placeholder="Enter your password"
+            />
+            <span
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              (click)="passwordVisible = !passwordVisible"
+            >
+              <i
+                class="fa"
+                [ngClass]="passwordVisible ? 'fa-eye-slash' : 'fa-eye'"
+              ></i>
+            </span>
+          </div>
+          <small
+            *ngIf="
+              formControls['password'].invalid &&
+              formControls['password'].touched
+            "
+            class="text-red-500 font-semibold"
+          >
+            Password must be at least 6 characters long.
+          </small>
+        </div>
+
+        <!--confirmation password-->
+        <div>
+          <label
+            for="confirmPassword"
+            class="block text-sm font-medium text-gray-600"
+          >
+            Confirm Password
+          </label>
+          <div class="relative">
+            <input
+              [type]="confirmPasswordVisible ? 'text' : 'password'"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              class="mt-1 p-2 w-full border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary"
+              placeholder="Confirm your password"
+            />
+            <span
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              (click)="confirmPasswordVisible = !confirmPasswordVisible"
+            >
+              <i
+                class="fa"
+                [ngClass]="confirmPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+              ></i>
+            </span>
+          </div>
+          <small
+            *ngIf="
+              registerForm.hasError('passwordMismatch') &&
+              registerForm.get('confirmPassword')?.touched
+            "
+            class="text-red-500 font-semibold"
+          >
+            Passwords do not match.
+          </small>
+        </div>
+
+        <!-- register button-->
+        <button
+          [disabled]="registerForm.invalid || isSubmitting"
+          type="submit"
+          class="w-full mt-6 py-2 px-4 bg-primary text-white font-semibold hover:bg-hoverPrimary focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          {{ isSubmitting ? 'Signing Up...' : 'Sign Up' }}
+        </button>
+        <small
+          *ngIf="errorMessage"
+          class="text-red-500 text-center font-semibold mt-1"
+        >
+          {{ errorMessage }}
+        </small>
+      </form>
+    </div>
+  </div>
+
+  <!-- Image Section (Hidden on Small Screens) -->
+  <div class="hidden lg:block w-1/2 h-full container-img"></div>
+</div>
