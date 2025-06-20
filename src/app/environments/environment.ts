@@ -1,11 +1,11 @@
 export const environment = {
   firebase: {
-    apiKey: 'AIzaSyDfEUoOa9lcQ3ni7N-7uhzA_7MFrsRaIvU',
-    authDomain: 'job-portal-a1535.firebaseapp.com',
-    projectId: 'job-portal-a1535',
-    storageBucket: 'job-portal-a1535.firebasestorage.app',
-    messagingSenderId: '965935173370',
-    appId: '1:965935173370:web:1ffc5bd4a62d3c65450343',
+  apiKey: "AIzaSyDtovaS_TIr6iokUwYfMuVABkH7I7uQRx4",
+  authDomain: "jobportal-8e469.firebaseapp.com",
+  projectId: "jobportal-8e469",
+  storageBucket: "jobportal-8e469.firebasestorage.app",
+  messagingSenderId: "989362408603",
+  appId: "1:989362408603:web:26b3b1198f41413be08a3e"
   },
   production: false,
 };
